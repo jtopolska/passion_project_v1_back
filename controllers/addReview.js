@@ -5,12 +5,14 @@ const path = require('path');
 exports.addReviews = async (req, res) => {
     try {
       const { imageUrl } = req.body;
+      console.log('add imageUrl', imageUrl)
   
       if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
         return res.status(400).json({ error: 'Invalid imageUrl' });
       }
   
       const newImage = new Reviews({ imageUrl });
+      console.log('newImage', newImage)
   
       await newImage.save();
   
