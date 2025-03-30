@@ -1,13 +1,13 @@
-const Reviews = require('../models/reviewsModel');
+const Posts = require('../models/postModel');
 const fs = require('fs').promises;
 const path = require('path');
 
-exports.deleteReviewById = async (req, res) => {
+exports.deletePostById = async (req, res) => {
     try {
       console.log('req.params', req.params)
       const { id } = req.params;
       console.log('del id', id)
-      const image = await Reviews.findById(id);
+      const image = await Posts.findById(id);
       console.log('del image', image)
   
       // if (!image) {
@@ -22,10 +22,10 @@ exports.deleteReviewById = async (req, res) => {
       //   return res.status(500).json({ error: err.message });
       // }
   
-      const check = await Reviews.findByIdAndDelete(id);
+      const check = await Posts.findByIdAndDelete(id);
       console.log('check', check);
   
-      const images = await Reviews.find().sort({ createdAt: 1 });
+      const images = await Posts.find().sort({ createdAt: 1 });
       res.status(200).json({ message: 'Image deleted successfully', images });
     } catch (error) {
       res.status(500).json({ error: error.message });

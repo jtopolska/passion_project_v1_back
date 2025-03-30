@@ -1,14 +1,19 @@
 const express = require('express')
 
-const { getAllReviews } = require("./controllers/getAllReviews");
-const { addReviews } = require('./controllers/addReview');
-const { deleteReviewById } = require('./controllers/deleteReview');
+const { getAllPosts } = require("./controllers/getAllPost");
+const { getSinglePost } = require("./controllers/singlePost");
+const { addPost } = require('./controllers/addPost');
+const { updatePost } = require('./controllers/updatePost');
+const { deletePostById } = require('./controllers/deletePost');
 const router = express.Router();
 
 
-router.get('/reviews', getAllReviews);
-router.post('/reviews', addReviews);
-router.delete('/reviews/:id', deleteReviewById);
+router.get('/posts', getAllPosts);
+router.get('/post/:id', getSinglePost);
+router.get('/admin/posts', getAllPosts);
+router.post('/admin/post', addPost);
+router.put('/update/:id', updatePost);
+router.delete('/delete/:id', deletePostById);
 
 //swagger
 // const swaggerUi = require('swagger-ui-express');

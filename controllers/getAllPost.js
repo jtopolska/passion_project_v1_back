@@ -1,10 +1,10 @@
-const Reviews = require('../models/reviewsModel');
+const Posts = require('../models/postModel');
 const fs = require('fs').promises;
 const path = require('path');
 
-exports.getAllReviews = async (req, res) => {
+exports.getAllPosts = async (req, res) => {
     try {
-      const images = await Reviews.find().sort({ createdAt: -1 });
+      const images = await Posts.find().sort({ createdAt: -1 });
       console.log('get images', images)
 
       res.status(200).json(images);
