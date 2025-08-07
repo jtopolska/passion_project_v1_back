@@ -1,10 +1,26 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    imageUrl: { 
-        type: String, 
-        required: true 
-    }
+  content: { type: String, required: true },
+  category: { type: String, required: true },
+  tags: [{ type: String }],
+  author: { type: String },
+  publishDate: { type: Date }
 }, { timestamps: true });
 
-module.exports = mongoose.model(`Posts`, postSchema)
+module.exports = mongoose.model('Post', postSchema);
+
+
+
+
+
+// const mongoose = require('mongoose');
+
+// const postSchema = new mongoose.Schema({
+//     imageUrl: { 
+//         type: String, 
+//         required: true 
+//     }
+// }, { timestamps: true });
+
+// module.exports = mongoose.model(`Posts`, postSchema)

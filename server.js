@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(routes);
+app.use('/api/v1', routes);
 
 // Global error handler middleware is using after all routes and other middlewares
 app.use(errorHandler); 
