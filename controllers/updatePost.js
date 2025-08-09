@@ -1,21 +1,48 @@
-const Posts = require('../models/postModel');
-const fs = require('fs').promises;
-const path = require('path');
+
+const UpdatePost = require('../models/updatePost');
 
 exports.updatePost = async (req, res) => {
-    try {
-        const { imageUrl } = req.body;
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
 
-        console.log('imageUrl update', imageUrl)
-        console.log('id update', id)
+    const updatedPost = await UpdatePost.findByIdAndUpdate(id, updatedData, {
+      new: true, // вернуть обновлённый документ
+      runValidators: true
+    });
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: 'Пост не найден' });
+    }
+
+    res.json(updatedPost);
+  } catch (error) {
+    console.error('Ошибка при обновлении поста:', error);
+    res.status(500).json({ message: 'Ошибка сервера' });
+  }
+};
+
+
+
+
+// const Posts = require('../models/postModel');
+// const fs = require('fs').promises;
+// const path = require('path');
+
+// exports.updatePost = async (req, res) => {
+//     try {
+//         const { imageUrl } = req.body;
+//         const { id } = req.params;
+
+//         console.log('imageUrl update', imageUrl)
+//         console.log('id update', id)
 
   
-        const updatedImages = await Posts.findByIdAndUpdate(id, { imageUrl: imageUrl }).sort({ createdAt: -1 });
-        console.log('updatedImages', updatedImages);
+//         const updatedImages = await Posts.findByIdAndUpdate(id, { imageUrl: imageUrl }).sort({ createdAt: -1 });
+//         console.log('updatedImages', updatedImages);
 
-        res.status(200).json(updatedImages);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
+//         res.status(200).json(updatedImages);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// }

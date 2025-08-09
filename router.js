@@ -1,10 +1,10 @@
 const express = require('express')
 
 const { getAllPosts } = require("./controllers/getAllPost");
-const { getSinglePost } = require("./controllers/singlePost");
+const { getPostById } = require("./controllers/singlePost");
 const { addPost } = require('./controllers/addPost');
 const { updatePost } = require('./controllers/updatePost');
-const { deletePostById } = require('./controllers/deletePost');
+const { deletePost } = require('./controllers/deletePost');
 
 const { getCategories } = require('./controllers/categories');
 const { getTags } = require('./controllers/tags');
@@ -14,11 +14,11 @@ const router = express.Router();
 
 
 router.get('/posts', getAllPosts);
-router.get('/post/:id', getSinglePost);
+router.get('/post/:id', getPostById);
 // router.get('/admin/posts', getAllPosts); дублируется с 1
-router.post('/admin/post', addPost);
-router.put('/update/:id', updatePost);
-router.delete('/delete/:id', deletePostById);
+router.post('/post', addPost);
+router.put('/post/:id', updatePost);
+router.delete('/post/:id', deletePost);
 
 // 📁 Категории
 router.get('/categories', getCategories);
