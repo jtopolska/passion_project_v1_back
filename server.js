@@ -23,6 +23,17 @@ app.use(errorHandler);
 app.use('/uploads', express.static('uploads'));
 app.use(uploadImgsService);
 
+const createDefaultAdmin = async () => {
+  const existing = await Admin.findOne({ username: 'admin' });
+  if (!existing) {
+    const admin = new Admin({ username: 'admin', password: 'admin123' });
+    await admin.save();
+    console.log('✅ Дефолтный админ создан: admin / admin123');
+  }
+};
+
+createDefaultAdmin();
+
 mongoose
 	.connect(process.env.MONGO_LINK)
 	.then(() => console.log("Connected to MONGODB"))
