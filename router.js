@@ -1,7 +1,7 @@
 const express = require('express')
 
 const { getAllPosts } = require("./controllers/getAllPost");
-const { getPostById } = require("./controllers/singlePost");
+const { getPostById, reactToPost } = require("./controllers/singlePost");
 const { addPost } = require('./controllers/addPost');
 const { updatePost } = require('./controllers/updatePost');
 const { deletePost } = require('./controllers/deletePost');
@@ -13,14 +13,17 @@ const { getAuthors } = require('./controllers/authors');
 const {
   login,
   changePassword
-} = './controllers/authController.js';
+} = require('./controllers/authController.js');
+
 const {
   createComment,
   updateComment,
   deleteComment,
   adminDeleteComment,
-  getCommentsByPost
-} = './controllers/commentController.js';
+  getCommentsByPost,
+  getCommentUsers,
+  resetCommentPassword
+} = require('./controllers/commentController.js');
 
 const router = express.Router();
 
@@ -47,6 +50,8 @@ router.get('/authors', getAuthors);
 // Авторизация
 router.post('/login', login);
 router.post('/change-password', changePassword);
+router.post('/comment/reset-password', resetCommentPassword);
+
 
 // Комментарии
 router.post('/post/:postId/comment', createComment);
@@ -54,6 +59,10 @@ router.get('/post/:postId/comments', getCommentsByPost);
 router.put('/comment/:id', updateComment);
 router.delete('/comment/:id', deleteComment);
 router.delete('/admin/comment/:id', adminDeleteComment);
+
+router.post('/post/:postId/react', reactToPost);
+router.get('/admin/comment-users', getCommentUsers);
+
 
 
 //swagger

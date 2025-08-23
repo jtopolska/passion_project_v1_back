@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const uploadImgsService = require('./middlewares/uploadImgsService');
 const errorHandler = require('./middlewares/errorHandler/errorHandler');
+const Admin = require('./models/adminModel');
+
 
 require('dotenv').config();
 mongoose.set('strictQuery', false)

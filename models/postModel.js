@@ -5,7 +5,13 @@ const postSchema = new mongoose.Schema({
   category: { type: String, required: true },
   tags: [{ type: String }],
   author: { type: String },
-  publishDate: { type: Date }
+  publishDate: { type: Date },
+  reactions: {
+    like: { type: Number, default: 0 },
+    fire: { type: Number, default: 0 },
+    thumbUp: { type: Number, default: 0 },
+    heart: { type: Number, default: 0 }
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Post', postSchema);

@@ -18,6 +18,32 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+exports.reactToPost = async (req, res) => {
+  const { postId } = req.params;
+  const { type } = req.body; // 'like', 'fire', 'thumbUp', 'heart'
+  console.log('postId', postId)
+  console.log('type', type)
+
+  try {
+    const post = await Post.findById(postId);
+    console.log('post', post)
+    if (!post) return res.status(404).json({ message: 'Пост не найден' });
+
+    // if (!post.reactions[type]) return res.status(400).json({ message: 'Неверный тип реакции' });
+    if (!(type in post.reactions)) {
+      return res.status(400).json({ message: 'Неверный тип реакции' });
+    }
+
+    post.reactions[type] += 1;
+    console.log('POST', post)
+    await post.save();
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка при добавлении реакции', error: err.message });
+  }
+};
+
 
 
 

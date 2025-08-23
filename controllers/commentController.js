@@ -1,5 +1,7 @@
 const Comment = require('../models/commentModel.js');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 exports.createComment = async (req, res) => {
   const { postId } = req.params;
@@ -42,4 +44,46 @@ exports.getCommentsByPost = async (req, res) => {
   const { postId } = req.params;
   const comments = await Comment.find({ postId });
   res.json(comments);
+};
+
+exports.getCommentUsers = async (req, res) => {
+  try {
+    const users = await Comment.find({}, 'nickname email password');
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка при получении пользователей', error: err.message });
+  }
+};
+
+exports.resetCommentPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const comment = await Comment.findOne({ email });
+    if (!comment) return res.status(404).json({ message: 'Комментарий с таким email не найден' });
+
+    const newPassword = crypto.randomBytes(4).toString('hex'); // 8 символов
+    comment.password = newPassword;
+    await comment.save();
+
+    // Отправка письма
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: 'Новый пароль для редактирования комментария',
+      text: `Ваш новый пароль: ${newPassword}`
+    });
+
+    res.status(200).json({ message: 'Новый пароль отправлен на почту' });
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка при сбросе пароля', error: err.message });
+  }
 };
